@@ -1,0 +1,62 @@
+{
+  "parameters": {
+    "fit_width": 10,
+    "min_snr": 6,
+    "nmax_src": 1000,
+    "zerooff_snr": 3
+  },
+  "provenance": {
+    "casa_executable": "/usr/local/bin/casa",
+    "comparison": "per-SPW raw/filtered counts, sky positions (0.05 arcsec), fluxes (2% or 1 microJy), point classification",
+    "generated_utc": "2026-11-18T10:17:47.219403+00:00",
+    "git_commit": "d02576566de4f22abeb230be0b8028e9f1f301f6",
+    "git_ref": "main:APSE.py",
+    "image_sha256": {
+      "member.uid___A001_X121_X46c.ari_l.UDF6462_sci.spw0_224241MHz.12m.mfs.I.pb.fits": "5fd2bd40b29720f3820f520a4de76e463e4d2575455745f527872a036b7e563b",
+      "member.uid___A001_X121_X46c.ari_l.UDF6462_sci.spw0_224241MHz.12m.mfs.I.pbcor.fits": "7baa67c1a02b3c72030f52684c8c27bdefdcd0093d8db0ab2a46a36c665b5b00",
+      "member.uid___A001_X121_X46c.ari_l.UDF6462_sci.spw1_226327MHz.12m.mfs.I.pb.fits": "9cec0dfd8733535036e4650c237e06bbf3873140e64d4215d8e4a6fe713ea5ba",
+      "member.uid___A001_X121_X46c.ari_l.UDF6462_sci.spw1_226327MHz.12m.mfs.I.pbcor.fits": "42d692bc83a1d7becfef625b0e37cec271397d7c80977bd52badd5a111e6d1e8",
+      "member.uid___A001_X121_X46c.ari_l.UDF6462_sci.spw2_239250MHz.12m.mfs.I.pb.fits": "9382ec9ecd2fc443fa7ee724ca7a43cdb9ee5cc9de41afe7ca8d31d0c65474bf",
+      "member.uid___A001_X121_X46c.ari_l.UDF6462_sci.spw2_239250MHz.12m.mfs.I.pbcor.fits": "77c264871165074b1675be50205e2dcce3cff6d08c8e3c7bd6b9d30bb6a76172",
+      "member.uid___A001_X121_X46c.ari_l.UDF6462_sci.spw3_241250MHz.12m.mfs.I.pb.fits": "c3e043be5d965c434c442039a5decfb7fd95c3f41b4ec7c9707ed936bb28f907",
+      "member.uid___A001_X121_X46c.ari_l.UDF6462_sci.spw3_241250MHz.12m.mfs.I.pbcor.fits": "a845f06e98f8ff8a721cc2f2dd507380d943f73fdb128269f3b0e2bd143bc6a5"
+    },
+    "origin": "Original v0.1.0 extractSourcesFromImage and filterSources functions from git",
+    "original_source_sha256": "2b1bdfec22ac971d6956f8324b5c30efedadbf52de7c6dd6b53339cb686ef3fe"
+  },
+  "schema": 1,
+  "spws": {
+    "0": {
+      "filtered_count": 0,
+      "raw_count": 0,
+      "sources": []
+    },
+    "1": {
+      "filtered_count": 0,
+      "raw_count": 0,
+      "sources": []
+    },
+    "2": {
+      "filtered_count": 0,
+      "raw_count": 0,
+      "sources": []
+    },
+    "3": {
+      "filtered_count": 1,
+      "raw_count": 1,
+      "sources": [
+        {
+          "dec_rad": -0.48484719909690205,
+          "flux_jy": 0.0003230534588642093,
+          "fluxerr_jy": 4.00701603494718e-05,
+          "ispoint": true,
+          "peak_jy_per_beam": 0.0002527862212187546,
+          "ra_rad": 0.9281757664388172
+        }
+      ]
+    }
+  },
+  "total_filtered": 1,
+  "total_raw": 1,
+  "uid": "uid://A001/X121/X46c"
+}
