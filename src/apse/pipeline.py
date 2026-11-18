@@ -36,13 +36,13 @@ def run_images(pairs, output_dir=".", name="apse", casa_executable="casa",
     pairs = [(str(Path(a).resolve()), str(Path(b).resolve())) for a,b in pairs]
     if not pairs:
         raise ValueError("At least one image pair is required")
+    if not name or Path(name).name != name or name in (".", ".."):
+        raise ValueError("name must be a simple filename prefix")
     for a, b in pairs:
         if not Path(a).is_file() or not Path(b).is_file():
             raise FileNotFoundError("Missing FITS image pair: %s / %s" % (a, b))
     output = Path(output_dir).resolve()
     output.mkdir(parents=True, exist_ok=True)
-    if not name or Path(name).name != name or name in (".", ".."):
-        raise ValueError("name must be a simple filename prefix")
     raw = output / (name + ".sources.raw.json")
     filtered = output / (name + ".sources.json")
     catalog = output / (name + ".sourcelist.json")
