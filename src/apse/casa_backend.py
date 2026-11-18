@@ -9,7 +9,7 @@ def main():
         raise SystemExit("APSE_JOB_FILE environment variable is required")
     job_path = Path(os.environ["APSE_JOB_FILE"]).resolve()
     job = json.loads(job_path.read_text())
-    from apse.legacy import extractSourcesFromImage
+    from apse.casa_extraction import extractSourcesFromImage
     result = {}
     next_id = 0
     per_image = []

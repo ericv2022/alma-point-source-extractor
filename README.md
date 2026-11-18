@@ -1,8 +1,10 @@
 # APSE — ALMA Point Source Extractor
 
-**Version 0.2.0 release candidate**. This release packages the original validated
-algorithms, removes machine-specific execution paths from the supported API,
-and adds a CLI and tests. **End-to-end scientific equivalence is not yet verified.**
+**Version 0.3.0**. The original v0.1.0 scientific algorithms are preserved.
+Version 0.2.0 was validated against the original on ALMA MOUS
+`uid://A001/X121/X46c` (four SPWs, one fitted and filtered source).
+Version 0.3.0 isolates CASA fitting and catalog operations from the legacy
+downloader; the v0.3.0 scientific regression must pass before release.
 
 ## Installation
 
@@ -80,3 +82,19 @@ casa --nogui --nologger --nologfile -c tests/casa_smoke.py
 
 No license was provided with the source archive. The repository owner must
 choose a license before third-party redistribution.
+
+## Scientific regression (release gate)
+
+Run the unit tests, then run the real CASA regression against the committed
+legacy reference. The FITS images are cached locally and **not committed**.
+
+```sh
+python -m unittest discover -s tests -p 'test_*.py' -v
+apse regression --offline --data-dir data/uid___A001_X121_X46c --casa /usr/local/bin/casa
+```
+
+Omit `--offline` to allow downloading the reference MOUS when the cache is
+missing. The small verified JSON reference is in `tests/reference/`.
+
+Version 0.3.0 changes code organization, not the source-fitting or filtering
+algorithms. The legacy implementation remains in `apse.legacy` for comparison.
