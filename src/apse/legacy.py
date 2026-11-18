@@ -55,7 +55,7 @@ except:
 
 def downloadImagesPerMOUS(MOUSuid, mfsOnly = True, sciOnly = True, PLweblog = True):
 
-    datalink = pyvo.dal.adhoc.DatalinkResults.from_result_url(f"https://almascience.eso.org/datalink/sync?ID={MOUSuid}")
+    datalink = pyvo.dal.adhoc.DatalinkResults.from_result_url(f"https://almascience.eso.org/datalink/sync?ID={MOUSuid.replace(chr(58), chr(95)).replace(chr(47), chr(95))}")
     data_info = datalink.to_table().to_pandas()
 
     for i in data_info.index:

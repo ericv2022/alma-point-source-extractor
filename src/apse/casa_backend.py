@@ -12,10 +12,13 @@ def main():
     from apse.legacy import extractSourcesFromImage
     result = {}
     next_id = 0
+    per_image = []
     for pbcor, pb in job["pairs"]:
         if not Path(pbcor).is_file() or not Path(pb).is_file():
             raise FileNotFoundError("Missing FITS image pair: %s / %s" % (pbcor, pb))
         sources = extractSourcesFromImage(pbcor, pb, **job["parameters"])
+        per_image.append({"pbcor": str(Path(pbcor).name), "pb": str(Path(pb).name),
+                          "count": len(sources)})
         for source in sources.values():
             result[next_id] = source
             next_id += 1
@@ -24,6 +27,8 @@ def main():
     with temporary.open("w") as handle:
         json.dump(result, handle)
     temporary.replace(output)
+    manifest = output.with_name(output.name.replace(".sources.raw.json", ".images.json"))
+    manifest.write_text(json.dumps(per_image, indent=2))
     print("APSE CASA extraction completed: %d fitted sources" % len(result))
 
 if __name__ == "__main__":

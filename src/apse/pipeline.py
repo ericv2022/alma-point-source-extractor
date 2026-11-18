@@ -36,6 +36,9 @@ def run_images(pairs, output_dir=".", name="apse", casa_executable="casa",
     pairs = [(str(Path(a).resolve()), str(Path(b).resolve())) for a,b in pairs]
     if not pairs:
         raise ValueError("At least one image pair is required")
+    for a, b in pairs:
+        if not Path(a).is_file() or not Path(b).is_file():
+            raise FileNotFoundError("Missing FITS image pair: %s / %s" % (a, b))
     output = Path(output_dir).resolve()
     output.mkdir(parents=True, exist_ok=True)
     if not name or Path(name).name != name or name in (".", ".."):
@@ -74,7 +77,7 @@ def run_images(pairs, output_dir=".", name="apse", casa_executable="casa",
     return results
 
 def run_mous(mous_uid, output_dir=".", name=None, casa_executable="casa",
-             mfs_only=True, sci_only=True, download_weblog=True, **kwargs):
+             mfs_only=True, sci_only=True, download_weblog=True, reuse_existing=True, **kwargs):
     """Download legacy ALMA products then process their PB-corrected FITS pairs.
 
     The downloader retains original behavior, including known security and
@@ -83,9 +86,14 @@ def run_mous(mous_uid, output_dir=".", name=None, casa_executable="casa",
     from .alma import downloadImagesPerMOUS
     output = Path(output_dir).resolve()
     output.mkdir(parents=True, exist_ok=True)
-    with _in_directory(output):
-        images = downloadImagesPerMOUS(mous_uid, mfsOnly=mfs_only,
-                                       sciOnly=sci_only, PLweblog=download_weblog)
+    if reuse_existing and list(output.glob("*.pbcor.fits")):
+        images = [p.name for p in sorted(output.glob("*.pbcor.fits"))]
+        if any(not (output / p.replace(".pbcor.fits", ".pb.fits")).is_file() for p in images):
+            raise RuntimeError("Incomplete existing FITS pairs; refusing to re-download interactively")
+    else:
+        with _in_directory(output):
+            images = downloadImagesPerMOUS(mous_uid, mfsOnly=mfs_only,
+                                           sciOnly=sci_only, PLweblog=download_weblog)
     pairs = [(output / image, output / image.replace(".pbcor.fits", ".pb.fits"))
              for image in images]
     safe_name = "member." + mous_uid.replace("://", "___").replace("/", "_")

@@ -31,9 +31,11 @@ class TestPipeline(unittest.TestCase):
                               "direction": {"RA": ["00:00:00"],
                                             "DEC": ["+00:00:00"]}},
                     "flux": {"value": [0.01], "error": [0.001]}}}))
+            Path(tmp, "a").touch()
+            Path(tmp, "b").touch()
             with patch("apse.pipeline._casa_path", return_value="/fake/casa"), \
                  patch("apse.pipeline.subprocess.run", side_effect=fake_run):
-                paths = run_images([("a", "b")], output_dir=tmp)
+                paths = run_images([(Path(tmp, "a"), Path(tmp, "b"))], output_dir=tmp)
             self.assertEqual(set(paths), {"raw", "filtered", "catalog"})
             self.assertEqual(json.loads(paths["catalog"].read_text())["0"]["FLUX"], .01)
 

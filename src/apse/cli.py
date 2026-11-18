@@ -11,6 +11,8 @@ def main(argv=None):
                         metavar=("PBCOR_FITS", "PB_FITS"))
     mous = sub.add_parser("mous", help="Download and process an ALMA MOUS")
     mous.add_argument("uid")
+    regression = sub.add_parser("regression", help="Opt-in local CASA scientific regression")
+    regression.add_argument("args", nargs=argparse.REMAINDER)
     for p in (images, mous):
         p.add_argument("--output-dir", default=".")
         p.add_argument("--name")
@@ -22,6 +24,9 @@ def main(argv=None):
         p.add_argument("--no-filter", action="store_true")
         p.add_argument("--no-catalog", action="store_true")
     args = parser.parse_args(argv)
+    if args.command == "regression":
+        from .regression import main as regression_main
+        return regression_main(args.args)
     common = dict(output_dir=args.output_dir, casa_executable=args.casa,
                   min_snr=args.min_snr, fit_width=args.fit_width,
                   nmax_src=args.nmax_src, zerooff_snr=args.zerooff_snr,
